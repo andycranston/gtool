@@ -50,6 +50,7 @@ if [ $? -eq 1 ]
 then
   echo "Formatting sdb"
   ./partition.exp
+  sleep 4
   uuid=`ls -l /dev/disk/by-partuuid | grep sdb1 | awk '{ print $9 }'`
   echo "[${uuid}]"
   if [ "$uuid" = "" ]

@@ -12,7 +12,7 @@ fi
 
 hostip=$1
 nbvip=$2
-sbvip=$2
+sbvip=$3
 
 echo "network:"
 echo "  version: 2"
