@@ -5,7 +5,13 @@
 # run stuff to prem a host
 #
 
-if [ ! -x /usr/sbin/chrony ]
+if [ ! -r $HOME/.vimrc ]
+then
+  echo "Adding .vimrc"
+  cp vimrc $HOME/.vimrc
+fi
+
+if [ ! -x /usr/sbin/chronyd ]
 then
   echo "Installing chrony"
   sudo apt install chrony
