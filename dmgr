@@ -59,8 +59,8 @@ then
   fi
   sudo mkfs -t ext4 /dev/disk/by-partuuid/$uuid
   sudo mkdir /backing_store
-  sudo cp /etc/fstab /tmp/fstab
-  sudo echo "/dev/disk/by-partuuid/$uuid /backing_store  ext4 defaults 0 2" >> /tmp/fstab
+  cp /etc/fstab /tmp/fstab
+  echo "/dev/disk/by-partuuid/$uuid /backing_store  ext4 defaults 0 2" >> /tmp/fstab
   sudo cp /tmp/fstab /etc/fstab
   sudo mount /backing_store
   sudo chown labuser:labuser /backing_store
