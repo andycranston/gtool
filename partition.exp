@@ -64,7 +64,7 @@ expect {
     exit 2
   }
   eof {
-    send_error "timeout waiting for command prompt\n"
+    send_error "eof waiting for command prompt\n"
     exit 2
   }
   "Command (? for help): " {
@@ -73,7 +73,22 @@ expect {
 }
 
 send "w\r"
-send "q\r"
+
+expect {
+  timeout {
+    send_error "timeout 6\n"
+    exit 2
+  }
+  eof {
+    send_error "eof 6\n"
+    exit 2
+  }
+  "Do you want to proceed? (Y/N): n" {
+    # fall through
+  }
+}
+
+send "y\r"
 
 expect {
   timeout {
