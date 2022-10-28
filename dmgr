@@ -14,17 +14,23 @@ fi
 if [ ! -x /usr/sbin/chronyd ]
 then
   echo "Installing chrony"
-  sudo apt install chrony
+  sudo apt -y install chrony
 fi
 
-grep microk8s /etc/group
+if [ ! -x /usr/bin/expect ]
+then
+  echo "Installing expect"
+  sudo apt -y install expect
+fi
+
+grep microk8s /etc/group >/dev/ull
 if [ $? -eq 1 ]
 then
   echo "Adding group microk8s"
   sudo groupadd -f microk8s
 fi
 
-grep microk8s /etc/group | grep labuser
+grep microk8s /etc/group | grep labuser >/dev/null
 if [ $? -eq 1 ]
 then
   echo "Adding group microk8s to user labuser"

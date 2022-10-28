@@ -1,0 +1,72 @@
+#!/usr/bin/expect --
+#
+# partition disk /dev/sdb
+#
+
+
+spawn sudo gdisk /dev/sdb
+
+expect {
+  timeout {
+    send_error "timeout after spawning gdisk command\n"
+    exit 2
+  }
+  eof {
+    send_error "eof after spawning gdisk command\n"
+    exit 2
+  }
+  "Command (? for help): " {
+    # fall through
+  }
+}
+
+send "n\r"
+
+expect {
+  timeout {
+    send_error "timeout on part number prompt\n"
+    exit 2
+  }
+  eof {
+    send_error "eof on part number prompt\n"
+    exit 2
+  }
+  "Partition number (1-128, default 1): " {
+    # fall through
+  }
+}
+
+send "1\r"
+
+send "\r"
+send "\r"
+send "\r"
+
+expect {
+  timeout {
+    send_error "timeout waiting for command prompt\n"
+    exit 2
+  }
+  eof {
+    send_error "timeout waiting for command prompt\n"
+    exit 2
+  }
+  "Command (? for help): " {
+    # fall through
+  }
+}
+
+send "w\r"
+send "q\r"
+
+expect {
+  timeout {
+    send_error "timeout waiting for gdisk to complete\n"
+    exit 2
+  }
+  eof {
+    # fall through
+  }
+}
+
+exit 0
