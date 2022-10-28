@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# sethost
+#
+# set a new hostname in /etc/hostname, update /etc/hosts and
+# generate new ssh keys under /etc/ssh
+#
+
+# set variable safety
+set -u
+
+PATH=/bin:/usr/bin
+export PATH
+
+progname=`basename $0`
+
+if [ $# -eq 0 ]
+then
+  echo "$progname: must specify new hostname on command line" 1>&2
+  exit 1
+fi
+
+newhostname=$1
+
+sudo id
+if [ $? -ne 0 ]
+then
+  echo "$progname: sudo authorisation failed" 1>&2
+  exit 1
+fi
+
+sudo cp -p /etc/hostname /etc/hostname.`date '+%s'`
+echo $newhostname > /tmp/hostname
+sudo cp /tmp/hostname /etc/hostname
+
+sudo cp -p /etc/hosts /etc/hosts.`date '+%s'`
+echo "127.0.1.1 $newhostname" > /tmp/hosts
+grep -v '^127.0.1.1' /etc/hosts >> /tmp/hosts
+sudo cp /tmp/hosts /etc/hosts
+
+sudo mv /etc/ssh/ssh_host_*_key /etc/ssh/ssh_host_*_key.pub /var/tmp
+sudo /usr/sbin/dpkg-reconfigure openssh-server
+
+exit 0
