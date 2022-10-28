@@ -83,7 +83,7 @@ expect {
     send_error "eof 6\n"
     exit 2
   }
-  "Do you want to proceed? (Y/N): n" {
+  "Do you want to proceed? (Y/N): " {
     # fall through
   }
 }
