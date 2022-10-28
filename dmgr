@@ -51,12 +51,12 @@ then
   echo "Formatting sdb"
   ./partition.exp
   uuid=`ls -l /dev/disk/by-partuuid | grep sdb1 | awk '{ print $9 }'`
+  echo "[${uuid}]"
   if [ "$uuid" = "" ]
   then
     echo "Cannot determine uuid of sdb"
     exit 2
   fi
-  echo $uuid
   sudo mkfs -t ext4 /dev/disk/by-partuuid/$uuid
   sudo mkdir /backing_store
   sudo cp /etc/fstab /tmp/fstab
