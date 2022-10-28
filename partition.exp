@@ -15,6 +15,22 @@ expect {
     send_error "eof after spawning gdisk command\n"
     exit 2
   }
+  "password for labuser: " {
+    # fall through
+  }
+}
+
+send "Broadbus1\r"
+
+expect {
+  timeout {
+    send_error "timeout after sudo password\n"
+    exit 2
+  }
+  eof {
+    send_error "eof after sudo password\n"
+    exit 2
+  }
   "Command (? for help): " {
     # fall through
   }
