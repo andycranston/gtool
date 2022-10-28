@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+#
+
+progname=`basename $0`
+
+if [ $# -ne 3 ]
+then
+  echo "$progname: usage: ./$progname hostip nbvip sbvip" 1>&2
+  exit 2
+fi
+
+hostip=$1
+nbvip=$2
+sbvip=$2
+
+echo "network:"
+echo "  version: 2"
+echo "  ethernets:"
+echo "    ens160:"
+echo "      addresses:"
+echo "      - ${hostip}/22"
+echo "      - ${nbvip}/22"
+echo "      routes:"
+echo "      - to: default"
+echo "        via: 10.173.128.1"
+echo "      nameservers:"
+echo "        addresses:"
+echo "        - 10.10.10.10"
+echo "        - 10.10.10.104"
+echo "    ens192:"
+echo "      addresses:"
+echo "      - ${sbvip}/24"
+
+exit 0
