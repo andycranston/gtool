@@ -23,7 +23,7 @@ then
   sudo apt -y install expect
 fi
 
-grep microk8s /etc/group >/dev/ull
+grep microk8s /etc/group >/dev/null
 if [ $? -eq 1 ]
 then
   echo "Adding group microk8s"
@@ -44,3 +44,25 @@ then
   echo "No second disk - add second disk"
   exit 1
 fi
+
+df -k | grep /backing_store >/dev/null
+if [ $? -eq 1 ]
+then
+  echo "Formatting sdb"
+  ./partition.exp
+  uuid=`ls -l /dev/disk/by-partuuid | grep sdb1 | awk '{ print $9 }'`
+  if [ "$uuid" = "" ]
+  then
+    echo "Cannot determine uuid of sdb"
+    exit 2
+  fi
+  echo $uuid
+  sudo mkfs -t ext4 /dev/disk/by-partuuid/$uuid
+  sudo mkdir /backing_store
+  sudo cp /etc/fstab /tmp/fstab
+  sudo echo "/dev/disk/by-partuuid/$uuid /backing_store  ext4 defaults 0 2" >> /tmp/fstab
+  sudo cp /tmp/fstab /etc/fstab
+  sudo mount /backing_store
+  sudo chown labuser:labuser /backing_store
+fi
+
