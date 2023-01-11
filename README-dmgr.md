@@ -33,7 +33,6 @@ Run:
 
 ```
 cd gtool
-sh perms
 ./dmgr
 ```
 
@@ -42,21 +41,6 @@ If you are asked to logout then logout, backon and run:
 ```
 cd gtool
 ./dmgr
-```
-
-If Ubuntu 20.04.x LTS AND a VMware virtual machine then edit the /etc/multipath.conf file and add these lines:
-
-```
-blacklist {
-    devnode sda
-    devnode sdb
-}
-```
-
-Run:
-
-```
-sudo systemctl restart multipathd
 ```
 
 Run:
