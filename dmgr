@@ -5,6 +5,9 @@
 # run stuff to prem a host
 #
 
+echo "Starting"
+sudo id
+
 if [ ! -r $HOME/.vimrc ]
 then
   echo "Adding .vimrc"
@@ -67,3 +70,14 @@ then
   sudo chown labuser:labuser /backing_store
 fi
 
+cmp -s multipath.conf /etc/multipath.conf
+
+if [ $? -eq 1 ]
+then
+  echo "Updating /etc/multipath.conf with blacklist for sda and sdb"
+  sudo cp multipath.conf /etc/multipath.conf
+  sudo systemctl restart multipathd.service
+fi
+
+echo "Done"
+exit 0
